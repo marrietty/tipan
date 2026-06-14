@@ -2,17 +2,25 @@
     $user = Auth::user();
     $role = $user->roleName();
 
-    // Navigation links per role. Each entry: [route name, label]. These point
-    // at the role dashboards for now; feature screens are added as they land.
+    // Navigation links per role. Each entry: [route name, label, active pattern?].
+    // The active pattern (routeIs wildcard) defaults to the route name.
     $links = match ($role) {
         'patient' => [
             ['patient.dashboard', 'Home'],
+            ['patient.booking.doctors', 'Find a doctor', 'patient.booking.*'],
+            ['patient.appointments.index', 'My appointments', 'patient.appointments.*'],
+            ['patient.records.index', 'My records', 'patient.records.*'],
         ],
         'doctor' => [
             ['doctor.dashboard', 'Home'],
+            ['doctor.appointments.index', 'Appointments', 'doctor.appointments.*'],
+            ['doctor.schedule.index', 'Schedule', 'doctor.schedule.*'],
         ],
         'admin' => [
-            ['admin.dashboard', 'Home'],
+            ['admin.dashboard', 'Overview'],
+            ['admin.doctors.index', 'Doctors', 'admin.doctors.*'],
+            ['admin.patients.index', 'Patients', 'admin.patients.*'],
+            ['admin.appointments.index', 'Appointments', 'admin.appointments.*'],
         ],
         default => [],
     };
@@ -34,9 +42,9 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    @foreach ($links as [$routeName, $label])
-                        <x-nav-link :href="route($routeName)" :active="request()->routeIs($routeName)">
-                            {{ $label }}
+                    @foreach ($links as $link)
+                        <x-nav-link :href="route($link[0])" :active="request()->routeIs($link[2] ?? $link[0])">
+                            {{ $link[1] }}
                         </x-nav-link>
                     @endforeach
                 </div>
@@ -96,9 +104,9 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            @foreach ($links as [$routeName, $label])
-                <x-responsive-nav-link :href="route($routeName)" :active="request()->routeIs($routeName)">
-                    {{ $label }}
+            @foreach ($links as $link)
+                <x-responsive-nav-link :href="route($link[0])" :active="request()->routeIs($link[2] ?? $link[0])">
+                    {{ $link[1] }}
                 </x-responsive-nav-link>
             @endforeach
         </div>

@@ -19,8 +19,8 @@
                 </p>
 
                 <div class="mt-6">
-                    {{-- Primary action. Points at booking once that screen lands. --}}
-                    <a href="#"
+                    {{-- Primary action. --}}
+                    <a href="{{ route('patient.booking.doctors') }}"
                        class="inline-flex items-center justify-center rounded-xl bg-teal-700 px-6 py-3 text-base font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
                         Find a doctor
                     </a>
@@ -28,11 +28,11 @@
             </div>
 
             <div class="mt-8 grid gap-4 sm:grid-cols-2">
-                <a href="#" class="block rounded-xl px-5 py-4 text-gray-700 transition hover:bg-white hover:border-gray-200/80 border border-transparent">
+                <a href="{{ route('patient.appointments.index') }}" class="block rounded-xl px-5 py-4 text-gray-700 transition hover:bg-white hover:border-gray-200/80 border border-transparent">
                     <div class="font-medium text-gray-900">My appointments</div>
                     <div class="mt-1 text-sm text-gray-500">Upcoming and past visits.</div>
                 </a>
-                <a href="#" class="block rounded-xl px-5 py-4 text-gray-700 transition hover:bg-white hover:border-gray-200/80 border border-transparent">
+                <a href="{{ route('patient.records.index') }}" class="block rounded-xl px-5 py-4 text-gray-700 transition hover:bg-white hover:border-gray-200/80 border border-transparent">
                     <div class="font-medium text-gray-900">My records</div>
                     <div class="mt-1 text-sm text-gray-500">Diagnoses and prescriptions.</div>
                 </a>
