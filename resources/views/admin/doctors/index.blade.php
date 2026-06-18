@@ -10,7 +10,7 @@
             </div>
 
             <a href="{{ route('admin.doctors.create') }}"
-               class="inline-flex items-center justify-center rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
+               class="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 Add a doctor
             </a>
         </div>
@@ -18,7 +18,7 @@
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         @if (session('status'))
-            <div class="mb-6 rounded-xl bg-teal-50 border border-teal-200 px-4 py-3 text-sm text-teal-800">
+            <div class="mb-6 rounded-xl bg-primary-indigo/30 border border-primary-indigo px-4 py-3 text-sm text-primary-dark">
                 {{ session('status') }}
             </div>
         @endif
@@ -45,7 +45,7 @@
                 <h2 class="text-lg font-semibold text-gray-900">No doctors yet</h2>
                 <p class="mt-2 text-gray-600">Add your first doctor account to get started.</p>
                 <a href="{{ route('admin.doctors.create') }}"
-                   class="mt-6 inline-flex items-center justify-center rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
+                   class="mt-6 inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                     Add a doctor
                 </a>
             </div>

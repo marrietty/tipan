@@ -9,7 +9,7 @@
 
     @php
         $statusStyles = [
-            'scheduled' => 'bg-teal-50 text-teal-700',
+            'scheduled' => 'bg-primary-indigo/30 text-primary',
             'completed' => 'bg-gray-100 text-gray-600',
             'missed' => 'bg-amber-50 text-amber-700',
         ];
@@ -17,7 +17,7 @@
 
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         @if (session('status'))
-            <div class="mb-6 rounded-xl bg-teal-50 border border-teal-200 px-4 py-3 text-sm text-teal-800">
+            <div class="mb-6 rounded-xl bg-primary-indigo/30 border border-primary-indigo px-4 py-3 text-sm text-primary-dark">
                 {{ session('status') }}
             </div>
         @endif
@@ -33,7 +33,7 @@
                 <div class="flex items-center justify-between gap-4">
                     <a href="{{ route('doctor.appointments.record.edit', $appointment) }}"
                        class="group min-w-0 flex-1 focus:outline-none">
-                        <div class="text-lg font-medium text-gray-900 group-hover:text-teal-800">
+                        <div class="text-lg font-medium text-gray-900 group-hover:text-primary-dark">
                             {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}
                         </div>
                         <div class="mt-1 text-sm text-gray-500 tabular-nums">
@@ -46,7 +46,7 @@
                             {{ $appointment->status->display_name }}
                         </span>
                         <a href="{{ route('doctor.appointments.record.edit', $appointment) }}"
-                           class="text-sm {{ $hasRecord ? 'text-gray-500' : 'text-teal-700 font-medium' }} hover:text-gray-900">
+                           class="text-sm {{ $hasRecord ? 'text-gray-500' : 'text-primary font-medium' }} hover:text-gray-900">
                             {{ $hasRecord ? 'View record' : 'Add record' }}
                         </a>
                     </div>
@@ -70,7 +70,7 @@
                             @method('PATCH')
                             <input type="hidden" name="status" value="completed">
                             <button type="submit"
-                                    class="rounded-lg bg-teal-700 px-4 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
+                                    class="rounded-lg bg-primary px-4 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                                 Mark completed
                             </button>
                         </form>

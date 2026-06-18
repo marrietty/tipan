@@ -17,7 +17,7 @@
                               :value="$search"
                               placeholder="Search by name or specialization" />
                 <button type="submit"
-                        class="shrink-0 inline-flex items-center justify-center rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
+                        class="shrink-0 inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                     Search
                 </button>
             </div>
@@ -25,7 +25,7 @@
 
         @forelse ($doctors as $doctor)
             <a href="{{ route('patient.booking.availability', $doctor) }}"
-               class="group flex items-center justify-between gap-4 rounded-2xl bg-white border border-gray-200/80 px-6 py-5 mb-3 transition hover:border-teal-300 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600">
+               class="group flex items-center justify-between gap-4 rounded-2xl bg-white border border-gray-200/80 px-6 py-5 mb-3 transition hover:border-primary-light hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                 <div>
                     <div class="text-lg font-medium text-gray-900">
                         Dr. {{ $doctor->first_name }} {{ $doctor->last_name }}
@@ -37,7 +37,7 @@
 
                 <div class="text-right">
                     @if ($doctor->open_slots_count > 0)
-                        <div class="text-sm font-medium text-teal-700">
+                        <div class="text-sm font-medium text-primary">
                             {{ $doctor->open_slots_count }} {{ Str::plural('opening', $doctor->open_slots_count) }}
                         </div>
                         <div class="mt-0.5 text-sm text-gray-400 group-hover:text-gray-600">View availability</div>
@@ -58,7 +58,7 @@
                 </p>
                 @if ($search !== '')
                     <a href="{{ route('patient.booking.doctors') }}"
-                       class="mt-6 inline-flex items-center text-sm font-medium text-teal-700 hover:text-teal-800">
+                       class="mt-6 inline-flex items-center text-sm font-medium text-primary hover:text-primary-dark">
                         Clear search
                     </a>
                 @endif

@@ -22,7 +22,7 @@ class AdminController extends Controller
 {
     /**
      * Overview: total patients, total doctors, and appointments by status.
-     * All via aggregate queries — counts and a grouped count — never loading
+     * All via aggregate queries (counts and a grouped count), never loading
      * rows. Cancelled appointments are deleted, so they simply won't appear;
      * the counts are honest about the statuses that exist.
      */
@@ -73,7 +73,7 @@ class AdminController extends Controller
 
     /**
      * Create a doctor: a user row (doctor role, hashed password) plus a doctor
-     * profile, in one transaction — mirroring how registration creates a
+     * profile, in one transaction, mirroring how registration creates a
      * patient. Validation catches duplicate email/license before the DB does.
      */
     public function storeDoctor(StoreDoctorRequest $request): RedirectResponse

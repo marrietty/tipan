@@ -20,7 +20,7 @@ class StorePrescriptionRequest extends FormRequest
             'medication_name' => ['required', 'string', 'max:255'],
             'dosage' => ['required', 'string', 'max:100'],
             'frequency' => ['required', 'string', 'max:100'],
-            // Optional, but if given must be positive — mirrors the CHECK
+            // Optional, but if given must be positive, mirroring the CHECK
             // (duration_days > 0) so the doctor gets a clean message first.
             'duration_days' => ['nullable', 'integer', 'min:1'],
             'instructions' => ['nullable', 'string', 'max:1000'],

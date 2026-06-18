@@ -33,7 +33,7 @@ class AppointmentController extends Controller
     /**
      * Mark a scheduled appointment completed or missed. The row is retained
      * (this is not cancellation) and the slot's is_booked is deliberately left
-     * untouched — the visit happened or was missed, so the slot stays consumed.
+     * untouched: the visit happened or was missed, so the slot stays consumed.
      */
     public function transition(Request $request, Appointment $appointment): RedirectResponse
     {

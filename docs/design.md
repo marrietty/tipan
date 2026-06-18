@@ -1,4 +1,4 @@
-# Tipan — Hospital Appointment + Records System
+# Tipan: Hospital Appointment + Records System
 ## Technical Design Document
 
 *Tipan: Where care meets schedule.*

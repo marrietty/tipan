@@ -1,6 +1,6 @@
 @php
     $statusStyles = [
-        'scheduled' => 'bg-teal-50 text-teal-700',
+        'scheduled' => 'bg-primary-indigo/30 text-primary',
         'completed' => 'bg-gray-100 text-gray-600',
         'missed' => 'bg-amber-50 text-amber-700',
     ];

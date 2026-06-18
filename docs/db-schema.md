@@ -1,5 +1,5 @@
 -- ============================================================
--- Tipan — Hospital Appointment + Records System
+-- Tipan: Hospital Appointment + Records System
 -- Complete Database Schema (PostgreSQL / Neon)
 -- ============================================================
 

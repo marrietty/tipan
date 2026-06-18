@@ -11,13 +11,13 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=poppins:300,400,500,600,700,800&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased text-gray-900">
-        <div class="min-h-screen bg-[#FAF9F7]">
+    <body class="font-sans antialiased text-heading">
+        <div class="min-h-screen flex flex-col bg-canvas">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -30,9 +30,20 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-1">
                 {{ $slot }}
             </main>
+
+            <!-- Footer -->
+            <footer class="border-t border-line bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-2">
+                        <x-application-logo class="h-8 w-auto" />
+                        <span class="font-bold tracking-wide text-heading">TIPAN</span>
+                    </div>
+                    <p class="text-sm text-body">&copy; {{ date('Y') }} {{ config('app.name', 'TIPAN') }} Medical Management System. All rights reserved.</p>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

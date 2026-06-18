@@ -1,4 +1,4 @@
-# Tipan — Hospital Appointment + Records System
+# Tipan: Hospital Appointment + Records System
 
 *Where care meets schedule.*
 
@@ -12,11 +12,11 @@ clarity and trust come before cleverness.
 
 Five areas, and the requirements stay within them:
 
-- **Accounts** — patient, doctor, and admin, each with a role-specific profile.
-- **Appointment booking** — slot-based, against availability doctors pre-generate.
-- **Medical records** — per-patient clinical history.
-- **Doctor notes and prescriptions** — basic, attached to a record.
-- **Admin dashboard** — account management and summary statistics.
+- **Accounts**: patient, doctor, and admin, each with a role-specific profile.
+- **Appointment booking**: slot-based, against availability doctors pre-generate.
+- **Medical records**: per-patient clinical history.
+- **Doctor notes and prescriptions**: basic, attached to a record.
+- **Admin dashboard**: account management and summary statistics.
 
 ## Stack
 
@@ -53,40 +53,40 @@ UUID primary keys for all domain entities; small lookup tables for controlled
 vocabularies, each carrying a machine `name` and a human `display_name` (always render
 `display_name` to users, never the raw `name`).
 
-- **Lookups** — `role`, `gender`, `specialization`, `status`. Seeded once, referenced by
+- **Lookups**: `role`, `gender`, `specialization`, `status`. Seeded once, referenced by
   foreign key. Serial integer keys.
-- **Accounts** — a central `user` (email, password hash, role) links one-to-one to
+- **Accounts**: a central `user` (email, password hash, role) links one-to-one to
   exactly one profile chosen by role: `patient`, `doctor`, or `admin`, each cascading on
   user deletion.
-- **Scheduling** — a `schedule` slot has a date, start/end time, and an `is_booked` flag.
+- **Scheduling**: a `schedule` slot has a date, start/end time, and an `is_booked` flag.
   A check constraint enforces end-after-start; a unique constraint over (doctor, date,
   start) prevents duplicate slots.
-- **Appointments** — an `appointment` links a patient, a doctor, and one slot (the slot
+- **Appointments**: an `appointment` links a patient, a doctor, and one slot (the slot
   reference is unique, so a slot holds at most one appointment), with a datetime, a
   status, and an optional reason.
-- **Clinical records** — a `medical_record` references a patient and a doctor, optionally
+- **Clinical records**: a `medical_record` references a patient and a doctor, optionally
   the appointment it pertains to (unique, set null on appointment removal so the record
   survives), and stores diagnosis and notes.
-- **Prescriptions** — a `prescription` belongs to a medical record and cascades with it;
+- **Prescriptions**: a `prescription` belongs to a medical record and cascades with it;
   each is one medication with dosage, frequency, optional positive duration, and
   instructions.
 
-The full schema is the source of truth and is **final** — build to it exactly. See
+The full schema is the source of truth and is **final**: build to it exactly. See
 [docs/db-schema.md](docs/db-schema.md).
 
 ## Core business rules
 
 - **Booking** runs inside one transaction: confirm the slot is unbooked, create the
   appointment referencing it (status defaults to scheduled), and set `is_booked` true.
-  The unique constraint on `appointment.schedule_id` is the authoritative conflict guard —
-  two simultaneous bookings cannot both win.
+  The unique constraint on `appointment.schedule_id` is the authoritative conflict guard,
+  so two simultaneous bookings cannot both win.
 - **Availability** shows only slots with `is_booked = false` for the selected doctor.
 - **Cancellation** runs as one transaction that deletes the appointment row and resets
   the slot's `is_booked` to false, freeing it for rebooking. Cancelled appointments
-  leave no historical row — a deliberate simplification.
-- **Status transitions** — appointments begin scheduled; a doctor may mark a scheduled
+  leave no historical row: a deliberate simplification.
+- **Status transitions**: appointments begin scheduled; a doctor may mark a scheduled
   one completed or missed (the row is retained). Cancellation is a deletion, not a status.
-- **Records and prescriptions** — one record per appointment (unique); records survive
+- **Records and prescriptions**: one record per appointment (unique); records survive
   appointment removal; prescriptions cascade with their record; non-positive durations
   are rejected at the database level.
 
@@ -124,7 +124,7 @@ php artisan key:generate
 ```
 
 Configure the database in `.env`. Neon connections require SSL (`DB_SSLMODE=require`).
-**Use the Neon direct endpoint, not the `-pooler` one** — the pooler runs PgBouncer in
+**Use the Neon direct endpoint, not the `-pooler` one**: the pooler runs PgBouncer in
 transaction-pooling mode, under which Laravel's `BEGIN`/`COMMIT` can land on different
 backend sessions, so the transactional booking flow silently fails to commit.
 
@@ -147,7 +147,7 @@ QUEUE_CONNECTION=sync
 ```
 
 The database is managed and seeded out of band (the lookup tables ship with the schema).
-A `DemoSeeder` loads a demonstration dataset — one admin, three doctors with open slots,
+A `DemoSeeder` loads a demonstration dataset: one admin, three doctors with open slots,
 four patients, and a few appointments with a medical record and prescriptions:
 
 ```bash
@@ -177,7 +177,7 @@ After login, each user is routed to their role's dashboard (`/patient`, `/doctor
 ## Email
 
 Resend handles outbound transactional mail through Laravel's mail layer (SMTP or the
-Resend API driver, with a verified sending domain) — booking confirmations and status
+Resend API driver, with a verified sending domain): booking confirmations and status
 changes. Because Resend is external, no AWS SES setup or production-access review is
 required.
 
@@ -191,6 +191,6 @@ is not required.
 
 ## Documentation
 
-- [docs/requirements.md](docs/requirements.md) — functional requirements and acceptance criteria.
-- [docs/design.md](docs/design.md) — architecture, components, business rules, and the UX standard.
-- [docs/db-schema.md](docs/db-schema.md) — the final database schema (read-only contract).
+- [docs/requirements.md](docs/requirements.md): functional requirements and acceptance criteria.
+- [docs/design.md](docs/design.md): architecture, components, business rules, and the UX standard.
+- [docs/db-schema.md](docs/db-schema.md): the final database schema (read-only contract).

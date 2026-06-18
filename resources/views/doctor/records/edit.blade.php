@@ -13,13 +13,14 @@
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="mb-6">
             <a href="{{ route('doctor.appointments.index') }}"
-               class="text-sm font-medium text-gray-500 transition hover:text-gray-900">
-                &larr; All appointments
+               class="inline-flex items-center gap-1.5 text-sm font-medium text-body transition hover:text-heading">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                All appointments
             </a>
         </div>
 
         @if (session('status'))
-            <div class="mb-6 rounded-xl bg-teal-50 border border-teal-200 px-4 py-3 text-sm text-teal-800">
+            <div class="mb-6 rounded-xl bg-primary-indigo/30 border border-primary-indigo px-4 py-3 text-sm text-primary-dark">
                 {{ session('status') }}
             </div>
         @endif
@@ -41,7 +42,7 @@
                 <div>
                     <x-input-label for="diagnosis" :value="__('Diagnosis')" />
                     <textarea id="diagnosis" name="diagnosis" rows="2"
-                              class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+                              class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
                               placeholder="Primary finding">{{ old('diagnosis', $record->diagnosis ?? '') }}</textarea>
                     <x-input-error :messages="$errors->get('diagnosis')" class="mt-2" />
                 </div>
@@ -49,14 +50,14 @@
                 <div>
                     <x-input-label for="notes" :value="__('Notes')" />
                     <textarea id="notes" name="notes" rows="5"
-                              class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
+                              class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
                               placeholder="Observations, advice, follow-up">{{ old('notes', $record->notes ?? '') }}</textarea>
                     <x-input-error :messages="$errors->get('notes')" class="mt-2" />
                 </div>
 
                 <div class="flex justify-end">
                     <button type="submit"
-                            class="inline-flex items-center justify-center rounded-xl bg-teal-700 px-6 py-3 text-base font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
+                            class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-base font-medium text-white shadow-sm transition hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                         {{ $record ? 'Save changes' : 'Save record' }}
                     </button>
                 </div>

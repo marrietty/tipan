@@ -3,7 +3,7 @@
         <p class="text-sm font-medium tracking-wide text-gray-500">Your care</p>
         <h1 class="mt-1 text-3xl font-semibold text-gray-900">Medical records</h1>
         <p class="mt-2 text-gray-600 max-w-xl">
-            A history of your visits &mdash; diagnoses, notes, and the medications
+            A history of your visits, including diagnoses, notes, and the medications
             you were prescribed. Most recent first.
         </p>
     </x-slot>

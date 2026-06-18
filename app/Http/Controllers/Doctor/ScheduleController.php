@@ -42,20 +42,77 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Create one slot for the authenticated doctor. The Form Request mirrors
-     * the slot_order and unique_doctor_slot constraints, so by here the input
-     * is sound; is_booked starts false.
+     * Generate every slot in the chosen window for the authenticated doctor.
+     * The window is expanded into back-to-back slots of the chosen duration;
+     * any that collide with the doctor's existing slots (same date and start)
+     * are skipped rather than failing the batch, so re-submitting an overlapping
+     * window safely tops up the gaps. The summary reports added and skipped.
      */
     public function store(StoreScheduleRequest $request): RedirectResponse
     {
-        Schedule::create([
-            'id' => (string) Str::uuid(),
-            ...$request->slotAttributes(),
-        ]);
+        $doctor = $request->user()->doctor;
+        $date = $request->input('available_date');
+
+        $candidates = $request->generatedSlots();
+
+        // Existing start times for this doctor on this date, used to skip clashes.
+        $taken = $doctor->schedules()
+            ->where('available_date', $date)
+            ->pluck('slot_start')
+            ->map(fn ($t) => Carbon::parse($t)->format('H:i'))
+            ->all();
+
+        $rows = [];
+        $skipped = 0;
+        foreach ($candidates as $slot) {
+            if (in_array($slot['slot_start'], $taken, true)) {
+                $skipped++;
+                continue;
+            }
+
+            // Guard against duplicate starts within this same batch too.
+            $taken[] = $slot['slot_start'];
+            $rows[] = [
+                'id' => (string) Str::uuid(),
+                'doctor_id' => $doctor->id,
+                'available_date' => $slot['available_date'],
+                'slot_start' => $slot['slot_start'],
+                'slot_end' => $slot['slot_end'],
+                'is_booked' => false,
+            ];
+        }
+
+        if ($rows !== []) {
+            Schedule::insert($rows);
+        }
+
+        $added = count($rows);
 
         return redirect()
             ->route('doctor.schedule.index')
-            ->with('status', 'Slot added.');
+            ->with('status', $this->summaryMessage($added, $skipped));
+    }
+
+    /**
+     * A plain-language summary of a bulk slot creation.
+     */
+    private function summaryMessage(int $added, int $skipped): string
+    {
+        if ($added === 0 && $skipped === 0) {
+            return 'That window is shorter than one slot, so nothing was added.';
+        }
+
+        if ($added === 0 && $skipped > 0) {
+            return 'No new slots added; all of those times already existed.';
+        }
+
+        $message = $added === 1 ? '1 slot added.' : "{$added} slots added.";
+
+        if ($skipped > 0) {
+            $message .= " {$skipped} skipped (already existed).";
+        }
+
+        return $message;
     }
 
     /**

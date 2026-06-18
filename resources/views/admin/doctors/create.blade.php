@@ -10,8 +10,9 @@
     <div class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="mb-6">
             <a href="{{ route('admin.doctors.index') }}"
-               class="text-sm font-medium text-gray-500 transition hover:text-gray-900">
-                &larr; All doctors
+               class="inline-flex items-center gap-1.5 text-sm font-medium text-body transition hover:text-heading">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                All doctors
             </a>
         </div>
 
@@ -35,7 +36,7 @@
                 <div>
                     <x-input-label for="specialization_id" :value="__('Specialization')" />
                     <select id="specialization_id" name="specialization_id" required
-                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                            class="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
                         <option value="" disabled {{ old('specialization_id') ? '' : 'selected' }}>Choose a specialization</option>
                         @foreach ($specializations as $specialization)
                             <option value="{{ $specialization->id }}" @selected(old('specialization_id') == $specialization->id)>
@@ -83,7 +84,7 @@
                         Cancel
                     </a>
                     <button type="submit"
-                            class="inline-flex items-center justify-center rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
+                            class="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                         Create doctor
                     </button>
                 </div>

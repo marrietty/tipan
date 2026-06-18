@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        <p class="text-sm font-medium tracking-wide text-teal-700">Booked</p>
+        <p class="text-sm font-medium tracking-wide text-primary">Booked</p>
         <h1 class="mt-1 text-3xl font-semibold text-gray-900">You&rsquo;re all set</h1>
         <p class="mt-2 text-gray-600 max-w-xl">
-            Your appointment is confirmed. Here are the details &mdash; we&rsquo;ll see you then.
+            Your appointment is confirmed. Here are the details. We&rsquo;ll see you then.
         </p>
     </x-slot>
 
@@ -18,7 +18,7 @@
             <div class="px-8 py-6 border-b border-gray-100">
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-500">Status</span>
-                    <span class="inline-flex items-center rounded-full bg-teal-50 px-3 py-1 text-sm font-medium text-teal-700">
+                    <span class="inline-flex items-center rounded-full bg-primary-indigo/30 px-3 py-1 text-sm font-medium text-primary">
                         {{ $appointment->status->display_name }}
                     </span>
                 </div>
@@ -60,7 +60,7 @@
                 Book another
             </a>
             <a href="{{ route('patient.dashboard') }}"
-               class="inline-flex items-center justify-center rounded-xl bg-teal-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2">
+               class="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-primary-dark focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 Done
             </a>
         </div>

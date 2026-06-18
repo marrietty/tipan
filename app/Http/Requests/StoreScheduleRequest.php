@@ -3,12 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Carbon;
 
 class StoreScheduleRequest extends FormRequest
 {
     /**
-     * Only a doctor reaches this request (route role middleware), and a slot is
+     * Only a doctor reaches this request (route role middleware), and slots are
      * always created for their own profile, so authorization holds here.
      */
     public function authorize(): bool
@@ -17,26 +17,20 @@ class StoreScheduleRequest extends FormRequest
     }
 
     /**
+     * A doctor sets a date, a time window, and a per-slot duration; the window
+     * is expanded into many slots in the controller. Uniqueness is no longer a
+     * field rule because the batch may legitimately overlap existing slots,
+     * which are skipped rather than rejected.
+     *
      * @return array<string, mixed>
      */
     public function rules(): array
     {
-        $doctorId = $this->user()->doctor->id;
-
         return [
             'available_date' => ['required', 'date', 'after_or_equal:today'],
+            'slot_start' => ['required', 'date_format:H:i'],
             'slot_end' => ['required', 'date_format:H:i', 'after:slot_start'],
-
-            // Mirror the unique_doctor_slot constraint (doctor, date, start) so
-            // a friendly message fires before the database rejects the insert.
-            'slot_start' => [
-                'required',
-                'date_format:H:i',
-                Rule::unique('schedule', 'slot_start')
-                    ->where(fn ($query) => $query
-                        ->where('doctor_id', $doctorId)
-                        ->where('available_date', $this->input('available_date'))),
-            ],
+            'duration' => ['required', 'integer', 'in:15,30,45,60'],
         ];
     }
 
@@ -48,7 +42,7 @@ class StoreScheduleRequest extends FormRequest
         return [
             'available_date.after_or_equal' => 'Choose today or a future date.',
             'slot_end.after' => 'The end time must be later than the start time.',
-            'slot_start.unique' => 'You already have a slot starting at that time on that date.',
+            'duration.in' => 'Choose a slot length of 15, 30, 45, or 60 minutes.',
         ];
     }
 
@@ -61,22 +55,36 @@ class StoreScheduleRequest extends FormRequest
             'available_date' => 'date',
             'slot_start' => 'start time',
             'slot_end' => 'end time',
+            'duration' => 'slot length',
         ];
     }
 
     /**
-     * Validated slot data ready for creation, scoped to this doctor.
+     * Expand the chosen window into back-to-back slots of the chosen duration.
+     * The final partial slot (one that would run past the end time) is dropped,
+     * so every returned slot is a full-length appointment within the window.
      *
-     * @return array<string, mixed>
+     * @return array<int, array{available_date: string, slot_start: string, slot_end: string}>
      */
-    public function slotAttributes(): array
+    public function generatedSlots(): array
     {
-        return [
-            'doctor_id' => $this->user()->doctor->id,
-            'available_date' => $this->input('available_date'),
-            'slot_start' => $this->input('slot_start'),
-            'slot_end' => $this->input('slot_end'),
-            'is_booked' => false,
-        ];
+        $date = $this->input('available_date');
+        $duration = (int) $this->input('duration');
+
+        $cursor = Carbon::createFromFormat('H:i', $this->input('slot_start'));
+        $end = Carbon::createFromFormat('H:i', $this->input('slot_end'));
+
+        $slots = [];
+        while ($cursor->copy()->addMinutes($duration)->lessThanOrEqualTo($end)) {
+            $slotEnd = $cursor->copy()->addMinutes($duration);
+            $slots[] = [
+                'available_date' => $date,
+                'slot_start' => $cursor->format('H:i'),
+                'slot_end' => $slotEnd->format('H:i'),
+            ];
+            $cursor = $slotEnd;
+        }
+
+        return $slots;
     }
 }

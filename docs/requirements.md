@@ -1,10 +1,10 @@
 Locked in: cancellation deletes the appointment row, which frees the slot (`is_booked` 
-# Tipan — Hospital Appointment + Records System
+# Tipan: Hospital Appointment + Records System
 ## Software Requirements Specification
 
 *Tipan: Where care meets schedule.*
 
-A web-based hospital appointment and records system built on Laravel with Blade, backed by Neon Postgres, with email through Resend, deployed on AWS EC2. This document specifies requirements aligned to the final d# Tipan — Hospital Appointment + Records System
+A web-based hospital appointment and records system built on Laravel with Blade, backed by Neon Postgres, with email through Resend, deployed on AWS EC2. This document specifies requirements aligned to the final d# Tipan: Hospital Appointment + Records System
 ## Technical Design Document
 
 *Tipan: Where care meets schedule.*
@@ -151,68 +151,68 @@ The schema uses lookup tables for controlled vocabularies and UUID primary keys 
 
 ## 3. Functional Requirements
 
-### FR1 — Accounts (Patient, Doctor, Admin)
+### FR1: Accounts (Patient, Doctor, Admin)
 
-- FR1.1 — A patient shall self-register with email, password, first name, last name, date of birth, gender, and optionally phone and address.
-- FR1.2 — The system shall create a `user` row with the patient role and a linked `patient` profile in a single transaction.
-- FR1.3 — Doctor and admin accounts shall be created by an admin, not self-registered, since doctors require a verified, unique license number.
-- FR1.4 — All users shall log in with email and password.
-- FR1.5 — Passwords shall be stored only as hashes, never in plain text.
-- FR1.6 — Email shall be unique and well-formed; registration shall reject duplicates.
-- FR1.7 — Passwords shall meet a minimum strength (8+ characters with a mix of letters and numbers).
-- FR1.8 — A user shall be able to log out and end the session.
-- FR1.9 — Each user shall hold exactly one role, drawn from the `role` lookup table.
-- FR1.10 — A patient shall view and edit their own profile; a doctor shall view and edit their own profile and slots.
+- FR1.1: A patient shall self-register with email, password, first name, last name, date of birth, gender, and optionally phone and address.
+- FR1.2: The system shall create a `user` row with the patient role and a linked `patient` profile in a single transaction.
+- FR1.3: Doctor and admin accounts shall be created by an admin, not self-registered, since doctors require a verified, unique license number.
+- FR1.4: All users shall log in with email and password.
+- FR1.5: Passwords shall be stored only as hashes, never in plain text.
+- FR1.6: Email shall be unique and well-formed; registration shall reject duplicates.
+- FR1.7: Passwords shall meet a minimum strength (8+ characters with a mix of letters and numbers).
+- FR1.8: A user shall be able to log out and end the session.
+- FR1.9: Each user shall hold exactly one role, drawn from the `role` lookup table.
+- FR1.10: A patient shall view and edit their own profile; a doctor shall view and edit their own profile and slots.
 
-### FR2 — Appointment Booking (Slot-Based)
+### FR2: Appointment Booking (Slot-Based)
 
-- FR2.1 — A doctor (or admin) shall generate availability by creating `schedule` slots with a date, start time, and end time.
-- FR2.2 — A patient shall search and select a doctor, then view that doctor's open slots, those where `is_booked` is false.
-- FR2.3 — The system shall display only slots that are not yet booked.
-- FR2.4 — Booking a slot shall create one `appointment` referencing that slot, the patient, and the doctor, with status defaulting to scheduled.
-- FR2.5 — A slot shall hold at most one appointment, enforced by the unique constraint on `schedule_id`; this is the system's conflict guard.
-- FR2.6 — On booking, the system shall set the slot's `is_booked` to true within the same transaction as the appointment insert.
-- FR2.7 — A patient shall optionally record a reason for the visit at booking.
-- FR2.8 — A patient shall view their upcoming and past appointments with statuses.
-- FR2.9 — A doctor shall view their own appointment schedule.
+- FR2.1: A doctor (or admin) shall generate availability by creating `schedule` slots with a date, start time, and end time.
+- FR2.2: A patient shall search and select a doctor, then view that doctor's open slots, those where `is_booked` is false.
+- FR2.3: The system shall display only slots that are not yet booked.
+- FR2.4: Booking a slot shall create one `appointment` referencing that slot, the patient, and the doctor, with status defaulting to scheduled.
+- FR2.5: A slot shall hold at most one appointment, enforced by the unique constraint on `schedule_id`; this is the system's conflict guard.
+- FR2.6: On booking, the system shall set the slot's `is_booked` to true within the same transaction as the appointment insert.
+- FR2.7: A patient shall optionally record a reason for the visit at booking.
+- FR2.8: A patient shall view their upcoming and past appointments with statuses.
+- FR2.9: A doctor shall view their own appointment schedule.
 
-### FR3 — Cancellation and Status Lifecycle
+### FR3: Cancellation and Status Lifecycle
 
-- FR3.1 — An appointment status shall be one of scheduled, completed, cancelled, or missed, drawn from the `status` lookup table.
-- FR3.2 — New appointments shall default to scheduled.
-- FR3.3 — Cancelling an appointment shall delete the appointment row and reset the linked slot's `is_booked` to false, both in one transaction, so the slot becomes immediately rebookable.
-- FR3.4 — Because cancellation deletes the row, the system shall not retain a historical record of cancelled appointments; this is an accepted design tradeoff.
-- FR3.5 — A doctor shall mark a scheduled appointment as completed or missed; these transitions update the status and retain the row.
-- FR3.6 — A patient shall cancel only their own upcoming appointments.
+- FR3.1: An appointment status shall be one of scheduled, completed, cancelled, or missed, drawn from the `status` lookup table.
+- FR3.2: New appointments shall default to scheduled.
+- FR3.3: Cancelling an appointment shall delete the appointment row and reset the linked slot's `is_booked` to false, both in one transaction, so the slot becomes immediately rebookable.
+- FR3.4: Because cancellation deletes the row, the system shall not retain a historical record of cancelled appointments; this is an accepted design tradeoff.
+- FR3.5: A doctor shall mark a scheduled appointment as completed or missed; these transitions update the status and retain the row.
+- FR3.6: A patient shall cancel only their own upcoming appointments.
 
-### FR4 — Medical Records
+### FR4: Medical Records
 
-- FR4.1 — A `medical_record` shall be created by a doctor, normally tied to the appointment it pertains to (one record per appointment, enforced unique).
-- FR4.2 — A record shall capture diagnosis, free-text notes, the attending doctor, the patient, and a recorded timestamp.
-- FR4.3 — A patient's medical history shall be derived by aggregating their medical records (and their prescriptions) in most-recent-first order; no separate container table is required.
-- FR4.4 — A patient shall view their own records and prescriptions read-only.
-- FR4.5 — A doctor shall view the records of patients they have treated.
-- FR4.6 — A patient shall not view another patient's records.
-- FR4.7 — If a linked appointment is removed, its record shall remain with the appointment reference cleared (set null), preserving the clinical record.
+- FR4.1: A `medical_record` shall be created by a doctor, normally tied to the appointment it pertains to (one record per appointment, enforced unique).
+- FR4.2: A record shall capture diagnosis, free-text notes, the attending doctor, the patient, and a recorded timestamp.
+- FR4.3: A patient's medical history shall be derived by aggregating their medical records (and their prescriptions) in most-recent-first order; no separate container table is required.
+- FR4.4: A patient shall view their own records and prescriptions read-only.
+- FR4.5: A doctor shall view the records of patients they have treated.
+- FR4.6: A patient shall not view another patient's records.
+- FR4.7: If a linked appointment is removed, its record shall remain with the appointment reference cleared (set null), preserving the clinical record.
 
-### FR5 — Doctor Notes + Prescriptions (Basic)
+### FR5: Doctor Notes + Prescriptions (Basic)
 
-- FR5.1 — Doctor notes shall be recorded in the medical record's notes and diagnosis fields, tied to the appointment.
-- FR5.2 — A doctor shall add one or more prescriptions to a medical record.
-- FR5.3 — Each prescription shall capture medication name, dosage, frequency, duration in days, and optional instructions.
-- FR5.4 — Duration in days, when given, shall be greater than zero.
-- FR5.5 — Multiple prescriptions on one record shall represent multiple medications.
-- FR5.6 — Deleting a medical record shall cascade-delete its prescriptions.
-- FR5.7 — A patient shall view their prescriptions within their records.
+- FR5.1: Doctor notes shall be recorded in the medical record's notes and diagnosis fields, tied to the appointment.
+- FR5.2: A doctor shall add one or more prescriptions to a medical record.
+- FR5.3: Each prescription shall capture medication name, dosage, frequency, duration in days, and optional instructions.
+- FR5.4: Duration in days, when given, shall be greater than zero.
+- FR5.5: Multiple prescriptions on one record shall represent multiple medications.
+- FR5.6: Deleting a medical record shall cascade-delete its prescriptions.
+- FR5.7: A patient shall view their prescriptions within their records.
 
-### FR6 — Admin Dashboard
+### FR6: Admin Dashboard
 
-- FR6.1 — The dashboard shall be accessible only to admin accounts.
-- FR6.2 — An admin shall create and manage doctor accounts, including license number and specialization.
-- FR6.3 — An admin shall view patient accounts.
-- FR6.4 — An admin shall view all appointments across the system with their statuses.
-- FR6.5 — The dashboard shall display summary counts: total patients, total doctors, and appointments grouped by status.
-- FR6.6 — An admin shall manage doctor schedule slots if needed.
+- FR6.1: The dashboard shall be accessible only to admin accounts.
+- FR6.2: An admin shall create and manage doctor accounts, including license number and specialization.
+- FR6.3: An admin shall view patient accounts.
+- FR6.4: An admin shall view all appointments across the system with their statuses.
+- FR6.5: The dashboard shall display summary counts: total patients, total doctors, and appointments grouped by status.
+- FR6.6: An admin shall manage doctor schedule slots if needed.
 
 ---
 
@@ -220,99 +220,99 @@ The schema uses lookup tables for controlled vocabularies and UUID primary keys 
 
 Given–When–Then, grouped by feature.
 
-### UAC1 — Accounts
+### UAC1: Accounts
 
-**UAC1.1 — Patient registration**
+**UAC1.1: Patient registration**
 - Given a new visitor, when they submit valid details with a unique, well-formed email and a strong password, then a user row with the patient role and a linked patient profile are created and the password is stored hashed.
 
-**UAC1.2 — Duplicate email blocked**
+**UAC1.2: Duplicate email blocked**
 - Given an email already in use, when a visitor registers with it, then registration is rejected with a clear message.
 
-**UAC1.3 — Weak password rejected**
+**UAC1.3: Weak password rejected**
 - Given the registration form, when the password is under 8 characters or lacks the required mix, then submission is blocked with a requirements message.
 
-**UAC1.4 — Doctor created by admin with unique license**
+**UAC1.4: Doctor created by admin with unique license**
 - Given an admin, when they create a doctor with a license number already in use, then the system rejects it due to the unique license constraint; when the license is unique, the doctor is created and can log in.
 
-**UAC1.5 — Login outcomes**
+**UAC1.5: Login outcomes**
 - Given a registered user, when credentials are correct they are logged in and routed by role; when incorrect, access is denied and no session is created.
 
-**UAC1.6 — Role-based access**
+**UAC1.6: Role-based access**
 - Given a logged-in patient, when they attempt to open the admin dashboard, then access is denied.
 
-### UAC2 — Booking
+### UAC2: Booking
 
-**UAC2.1 — Book an open slot**
+**UAC2.1: Book an open slot**
 - Given a patient viewing a doctor's open slots, when they select an unbooked slot and confirm, then one appointment is created with status scheduled and the slot's `is_booked` becomes true, removing it from the open list.
 
-**UAC2.2 — Booked slot cannot be double-booked**
+**UAC2.2: Booked slot cannot be double-booked**
 - Given a slot already holding an appointment, when another patient attempts to book it, then the unique constraint on the slot blocks a second appointment and the patient is shown a slot-unavailable message.
 
-**UAC2.3 — Only open slots are offered**
+**UAC2.3: Only open slots are offered**
 - Given a doctor with some booked and some open slots, when a patient views availability, then only slots with `is_booked` false appear.
 
-### UAC3 — Cancellation and Status
+### UAC3: Cancellation and Status
 
-**UAC3.1 — Cancel frees the slot**
+**UAC3.1: Cancel frees the slot**
 - Given a patient with a scheduled appointment, when they cancel it, then the appointment row is deleted and the slot's `is_booked` resets to false, making it appear again in the open list and immediately rebookable.
 
-**UAC3.2 — Cancel restricted to owner**
+**UAC3.2: Cancel restricted to owner**
 - Given a patient, when they attempt to cancel an appointment that is not theirs, then the action is denied.
 
-**UAC3.3 — Doctor marks outcome**
+**UAC3.3: Doctor marks outcome**
 - Given a doctor viewing a scheduled appointment, when they mark it completed or missed, then the status updates and the appointment row is retained.
 
-### UAC4 — Medical Records
+### UAC4: Medical Records
 
-**UAC4.1 — Doctor records an outcome**
+**UAC4.1: Doctor records an outcome**
 - Given a doctor on a treated patient's appointment, when they save a medical record with diagnosis and notes, then one record is created for that appointment and appears in the patient's history.
 
-**UAC4.2 — One record per appointment**
+**UAC4.2: One record per appointment**
 - Given an appointment already having a medical record, when a second record for the same appointment is attempted, then it is rejected by the unique constraint.
 
-**UAC4.3 — Patient views own history**
+**UAC4.3: Patient views own history**
 - Given a logged-in patient, when they open their records, then their medical records and prescriptions appear most-recent-first, read-only.
 
-**UAC4.4 — Cross-patient access blocked**
+**UAC4.4: Cross-patient access blocked**
 - Given a patient, when they attempt to view another patient's records, then access is denied.
 
-**UAC4.5 — Record survives appointment removal**
+**UAC4.5: Record survives appointment removal**
 - Given a medical record linked to an appointment, when that appointment is removed, then the record remains with its appointment reference cleared.
 
-### UAC5 — Prescriptions
+### UAC5: Prescriptions
 
-**UAC5.1 — Add prescriptions**
+**UAC5.1: Add prescriptions**
 - Given a doctor on a medical record, when they add one or more medications with dosage, frequency, and a positive duration, then each prescription is stored and visible to the patient.
 
-**UAC5.2 — Invalid duration rejected**
+**UAC5.2: Invalid duration rejected**
 - Given a prescription entry, when the duration in days is zero or negative, then the database check constraint rejects it.
 
-**UAC5.3 — Prescriptions cascade with record**
+**UAC5.3: Prescriptions cascade with record**
 - Given a medical record with prescriptions, when the record is deleted, then its prescriptions are deleted with it.
 
-### UAC6 — Admin Dashboard
+### UAC6: Admin Dashboard
 
-**UAC6.1 — Admin-only access**
+**UAC6.1: Admin-only access**
 - Given a non-admin, when they try to reach the dashboard, then access is denied.
 
-**UAC6.2 — Manage doctors**
+**UAC6.2: Manage doctors**
 - Given an admin, when they create or update a doctor account, then the change is reflected in doctor listings.
 
-**UAC6.3 — View all appointments**
+**UAC6.3: View all appointments**
 - Given an admin, when they open the appointments view, then all appointments across patients and doctors are listed with statuses.
 
-**UAC6.4 — Summary statistics**
+**UAC6.4: Summary statistics**
 - Given an admin on the dashboard, when it loads, then accurate totals for patients, doctors, and appointments-by-status are shown.
 
 ---
 
 ## 5. Non-Functional Requirements
 
-- NFR1 — **Security.** Passwords hashed; sessions expire after inactivity; medical data accessible only to authorized roles; Neon connections require SSL.
-- NFR2 — **Data integrity.** Slot uniqueness and the booking transaction (appointment insert plus `is_booked` update) run server-side so concurrent bookings cannot both succeed; cancellation runs as a single transaction so row deletion and `is_booked` reset never diverge.
-- NFR3 — **Usability.** Responsive Blade interface usable on desktop and mobile browsers.
-- NFR4 — **Performance.** Dashboard and appointment listings load within a reasonable time under normal use.
-- NFR5 — **Availability.** Data persists reliably in Neon Postgres.
+- NFR1: **Security.** Passwords hashed; sessions expire after inactivity; medical data accessible only to authorized roles; Neon connections require SSL.
+- NFR2: **Data integrity.** Slot uniqueness and the booking transaction (appointment insert plus `is_booked` update) run server-side so concurrent bookings cannot both succeed; cancellation runs as a single transaction so row deletion and `is_booked` reset never diverge.
+- NFR3: **Usability.** Responsive Blade interface usable on desktop and mobile browsers.
+- NFR4: **Performance.** Dashboard and appointment listings load within a reasonable time under normal use.
+- NFR5: **Availability.** Data persists reliably in Neon Postgres.
 
 ---
 

@@ -1,4 +1,7 @@
 <x-guest-layout>
+    <x-slot name="heading">Set a New Password</x-slot>
+    <x-slot name="subheading">Choose a strong password for your account</x-slot>
+
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
@@ -30,10 +33,8 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
+        <x-primary-button class="w-full mt-6 py-3 text-base">
+            {{ __('Reset Password') }}
+        </x-primary-button>
     </form>
 </x-guest-layout>
