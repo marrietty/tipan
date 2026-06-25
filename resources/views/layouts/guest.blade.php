@@ -15,18 +15,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <!-- Dark Mode Setup -->
-        <script>
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        </script>
     </head>
-    <body class="font-sans text-heading antialiased dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
-        <div class="min-h-screen flex items-center justify-center bg-canvas dark:bg-gray-900 p-4 sm:p-6 lg:p-8 transition-colors duration-200">
+    <body class="font-sans text-heading antialiased">
+        <div class="min-h-screen flex items-center justify-center bg-canvas p-4 sm:p-6 lg:p-8">
             <div class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 bg-surface rounded-2xl shadow-xl overflow-hidden">
 
                 <!-- Brand panel -->
