@@ -64,9 +64,15 @@
                         </p>
 
                         <div class="mt-8 flex flex-wrap gap-4">
-                            <a href="{{ route('register') }}" class="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition">
-                                Get Started
-                            </a>
+                            @auth
+                                <a href="{{ url('/') }}" class="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition active:scale-95 duration-200">
+                                    Go to Dashboard
+                                </a>
+                            @else
+                                <a href="{{ route('register') }}" class="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded-lg transition active:scale-95 duration-200">
+                                    Get Started
+                                </a>
+                            @endauth
                             <a href="#services" class="inline-flex items-center gap-2 px-6 py-3 bg-white border border-line hover:bg-canvas text-primary font-semibold rounded-lg transition">
                                 Learn More
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
