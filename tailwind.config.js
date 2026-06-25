@@ -33,7 +33,7 @@ export default {
                 canvas: '#F6F9FF',    // Background
                 line: '#E6EEFF',      // Borders / Line
                 heading: '#1A2B6D',   // Heading text
-                body: '#64748B',      // Body text
+                body: '#475569',      // Body text
                 muted: '#94A3B8',     // Light text
 
                 // Status / feedback.
