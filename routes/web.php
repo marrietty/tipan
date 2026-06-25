@@ -29,7 +29,7 @@ Route::get('/', function () {
  */
 
 Route::middleware(['auth', 'role:patient'])->prefix('patient')->name('patient.')->group(function () {
-    Route::view('/', 'patient.dashboard')->name('dashboard');
+    Route::get('/', \App\Http\Controllers\Patient\DashboardController::class)->name('dashboard');
 
     Route::prefix('booking')->name('booking.')->group(function () {
         Route::get('doctors', [BookingController::class, 'doctors'])->name('doctors');
