@@ -16,17 +16,8 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <!-- Dark Mode Setup -->
-        <script>
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        </script>
     </head>
-    <body class="font-sans antialiased text-heading bg-canvas dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <body class="font-sans antialiased text-heading bg-canvas">
         <div x-data="{ open: false }" class="min-h-screen">
 
             <!-- Header -->
@@ -45,9 +36,6 @@
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <div class="mr-2 hidden md:block">
-                            <x-theme-toggle />
-                        </div>
                         @auth
                             <a href="{{ url('/') }}" class="inline-flex items-center px-5 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition">
                                 Dashboard
