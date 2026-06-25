@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Override browser autofill styling for inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #1A2B6D !important; /* matches text-heading */
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Dark mode autofill override */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover, 
+.dark input:-webkit-autofill:focus, 
+.dark input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #111827 inset !important; /* matches bg-gray-900 */
+    -webkit-text-fill-color: #F3F4F6 !important; /* matches text-gray-100 */
+    transition: background-color 5000s ease-in-out 0s;
+}
