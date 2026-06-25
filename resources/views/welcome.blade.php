@@ -16,8 +16,17 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Dark Mode Setup -->
+        <script>
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        </script>
     </head>
-    <body class="font-sans antialiased text-heading bg-canvas">
+    <body class="font-sans antialiased text-heading bg-canvas dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200">
         <div x-data="{ open: false }" class="min-h-screen">
 
             <!-- Header -->
@@ -33,10 +42,12 @@
                         <a href="#services" class="hover:text-heading transition">Services</a>
                         <a href="#about" class="hover:text-heading transition">About</a>
                         <a href="#faq" class="hover:text-heading transition">FAQ</a>
-                        <a href="#contact" class="hover:text-heading transition">Contact</a>
                     </div>
 
                     <div class="flex items-center gap-3">
+                        <div class="mr-2 hidden md:block">
+                            <x-theme-toggle />
+                        </div>
                         @auth
                             <a href="{{ url('/') }}" class="inline-flex items-center px-5 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition">
                                 Dashboard
@@ -129,18 +140,16 @@
                     <h3 class="mt-12 text-center text-sm font-semibold uppercase tracking-wide text-primary">Meet the Team</h3>
                     <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         @foreach ([
-                            ['John Paul Curada', 'Lead Developer'],
-                            ['Neo Ervine Geroda', 'Database Admin'],
-                            ['Marie Criz Zaragoza', 'Frontend Developer'],
-                            ['Eunice Lim', 'UI/UX Developer'],
-                        ] as [$name, $role])
-                            <div class="bg-canvas border border-line rounded-2xl p-6 text-center">
-                                <div class="mx-auto h-16 w-16 rounded-full bg-brand-gradient flex items-center justify-center text-white text-xl font-bold">
-                                    {{ collect(explode(' ', $name))->map(fn ($p) => mb_substr($p, 0, 1))->take(2)->implode('') }}
-                                </div>
-                                <div class="mt-4 font-semibold text-heading">{{ $name }}</div>
+                            ['John Paul Curada', 'Lead Developer', 'JpCurada'],
+                            ['Neo Ervine Geroda', 'Database Admin', 'neo-geroda'],
+                            ['Marie Criz Zaragoza', 'Frontend Developer', 'marrietty'],
+                            ['Eunice Lim', 'UI/UX Developer', 'yunitchi'],
+                        ] as [$name, $role, $github])
+                            <a href="https://github.com/{{ $github }}" target="_blank" rel="noopener noreferrer" class="group block bg-canvas border border-line rounded-2xl p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary-light">
+                                <img src="https://github.com/{{ $github }}.png?size=128" alt="{{ $name }}" class="mx-auto h-16 w-16 rounded-full border-2 border-transparent group-hover:border-primary transition-colors">
+                                <div class="mt-4 font-semibold text-heading group-hover:text-primary transition-colors">{{ $name }}</div>
                                 <div class="mt-1 text-sm text-body">{{ $role }}</div>
-                            </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>
