@@ -6,6 +6,8 @@
 
         <title>{{ config('app.name', 'TIPAN') }}: Secure Healthcare Anytime, Anywhere</title>
 
+        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+
         <style>[x-cloak]{display:none !important;}</style>
 
         <!-- Fonts -->
