@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <p class="text-sm font-medium tracking-wide text-primary">Patient</p>
-        <h1 class="mt-1 text-3xl font-semibold text-heading">
+        <h1 class="text-3xl font-semibold text-heading">
             {{ $greeting }}, {{ Auth::user()->displayName() }}.
         </h1>
         <p class="mt-2 text-body max-w-xl">
@@ -17,18 +16,18 @@
                 
                 <!-- Next Appointment Card -->
                 @if($nextAppointment)
-                    <div class="rounded-2xl bg-white border border-line p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="rounded-2xl bg-white border border-line p-6 sm:p-8 shadow-sm flex flex-col justify-between">
                         <div>
                             <div class="text-sm font-semibold text-primary uppercase tracking-wider mb-1">Your next appointment</div>
                             <h2 class="text-xl font-semibold text-heading">Dr. {{ $nextAppointment->doctor->user->displayName() }}</h2>
-                            <p class="text-body">{{ $nextAppointment->doctor->specialization }}</p>
+                            <p class="text-body">{{ $nextAppointment->doctor->specialization->display_name ?? '' }}</p>
                             <div class="mt-3 flex items-center gap-2 text-sm text-heading bg-canvas inline-flex px-3 py-1.5 rounded-lg border border-line/50">
                                 <svg class="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 <span>{{ \Carbon\Carbon::parse($nextAppointment->appointment_dt)->format('D M j, g:i A') }}</span>
                             </div>
                         </div>
-                        <div class="shrink-0">
-                            <a href="{{ route('patient.appointments.index') }}" class="inline-flex items-center justify-center rounded-xl bg-white border border-line px-4 py-2 text-sm font-medium text-heading shadow-sm transition-all hover:bg-canvas active:scale-95">
+                        <div class="mt-6">
+                            <a href="{{ route('patient.appointments.index') }}" class="inline-flex items-center justify-center rounded-xl bg-white border border-line px-6 py-3 text-base font-medium text-heading shadow-sm transition-all hover:bg-canvas active:scale-95">
                                 View details
                             </a>
                         </div>
@@ -36,7 +35,7 @@
                 @endif
 
                 <!-- Book an Appointment Card (Primary CTA) -->
-                <div class="rounded-2xl bg-white border border-line p-8 shadow-sm relative overflow-hidden">
+                <div class="rounded-2xl bg-white border border-line p-8 shadow-sm relative overflow-hidden flex-1 flex flex-col justify-center">
                     <div class="relative z-10 max-w-lg">
                         <h2 class="text-xl font-semibold text-heading">Book a new appointment</h2>
                         <p class="mt-2 text-body">
@@ -57,14 +56,14 @@
             </div>
 
             <!-- Right Column: Sidebar & Illustration -->
-            <div class="lg:col-span-4 flex flex-col gap-6">
+            <div class="lg:col-span-4 flex flex-col justify-end">
                 <!-- Illustration -->
-                <div class="hidden lg:flex justify-center items-center p-4">
-                    <img src="{{ asset('images/doctor.png') }}" alt="Medical Illustration" class="w-full max-w-[240px] h-auto drop-shadow-md">
+                <div class="hidden lg:flex justify-center items-end -mb-1 relative z-0">
+                    <img src="{{ asset('images/doctor.png') }}" alt="Medical Illustration" class="w-full max-w-[260px] h-auto drop-shadow-md">
                 </div>
 
                 <!-- Secondary Actions -->
-                <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-6 relative z-10">
                     <a href="{{ route('patient.appointments.index') }}" class="group flex items-center justify-between rounded-xl px-4 py-3 text-body bg-white border border-line shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow hover:border-primary/30">
                         <div class="flex items-start gap-3">
                             <div class="mt-0.5 text-primary">
