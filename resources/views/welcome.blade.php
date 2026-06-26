@@ -91,12 +91,7 @@
                             <div class="relative z-10" style="-webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%); mask-image: linear-gradient(to bottom, black 80%, transparent 100%);">
                                 <img src="{{ asset('images/doctor.png') }}" alt="Healthcare Professional" class="w-full h-auto object-cover mix-blend-multiply" />
                             </div>
-                            
-                            <!-- Grounding element at the base -->
-                            <div class="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-3/4 max-w-[240px] flex flex-col items-center z-0">
-                                <div class="w-full h-4 rounded-[100%] bg-primary-indigo/40 blur-[4px]"></div>
-                                <div class="w-1/2 h-1 mt-1 rounded-full bg-primary/20"></div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
