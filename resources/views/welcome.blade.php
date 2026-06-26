@@ -82,11 +82,21 @@
                     <!-- Hero visual -->
                     <div class="relative flex justify-center lg:justify-end items-center">
                         <!-- Decorative subtle gradient backdrop to maintain the brand palette -->
-                        <div class="absolute inset-0 max-w-sm mx-auto rounded-full bg-brand-gradient opacity-20 blur-3xl transform translate-y-4"></div>
+                        <div class="absolute inset-0 max-w-sm mx-auto rounded-full bg-brand-gradient opacity-20 blur-3xl transform translate-y-4 -z-10"></div>
                         
-                        <!-- Polished illustration container -->
-                        <div class="relative z-10 w-full max-w-sm lg:max-w-md overflow-hidden rounded-3xl shadow-lg bg-white border border-white/50 transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
-                            <img src="{{ asset('images/doctor.png') }}" alt="Healthcare Professional" class="w-full h-auto object-cover" />
+                        <!-- Illustration container without the white box -->
+                        <div class="relative z-10 w-full max-w-sm lg:max-w-md transition-all duration-500 hover:-translate-y-1">
+                            
+                            <!-- Image with bottom fade mask and multiply blend mode (removes white bg) -->
+                            <div class="relative z-10" style="-webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%); mask-image: linear-gradient(to bottom, black 80%, transparent 100%);">
+                                <img src="{{ asset('images/doctor.png') }}" alt="Healthcare Professional" class="w-full h-auto object-cover mix-blend-multiply" />
+                            </div>
+                            
+                            <!-- Grounding element at the base -->
+                            <div class="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-3/4 max-w-[240px] flex flex-col items-center z-0">
+                                <div class="w-full h-4 rounded-[100%] bg-primary-indigo/40 blur-[4px]"></div>
+                                <div class="w-1/2 h-1 mt-1 rounded-full bg-primary/20"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
