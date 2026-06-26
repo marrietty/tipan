@@ -89,7 +89,7 @@
                             
                             <!-- Image with bottom fade mask and multiply blend mode (removes white bg) -->
                             <div class="relative z-10" style="-webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%); mask-image: linear-gradient(to bottom, black 80%, transparent 100%);">
-                                <img src="{{ asset('images/doctor.png') }}" alt="Healthcare Professional" class="w-full h-auto object-cover mix-blend-multiply" />
+                                <img src="{{ asset('images/doctor-3.png') }}" alt="Healthcare Professional" class="w-full h-auto object-cover mix-blend-multiply" />
                             </div>
 
                         </div>
