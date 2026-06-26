@@ -80,9 +80,13 @@
                     </div>
 
                     <!-- Hero visual -->
-                    <div class="relative">
-                        <div class="aspect-square max-w-md mx-auto rounded-full bg-brand-gradient opacity-90 flex items-center justify-center">
-                            <x-application-logo class="h-40 w-auto drop-shadow-xl" />
+                    <div class="relative flex justify-center lg:justify-end items-center">
+                        <!-- Decorative subtle gradient backdrop to maintain the brand palette -->
+                        <div class="absolute inset-0 max-w-sm mx-auto rounded-full bg-brand-gradient opacity-20 blur-3xl transform translate-y-4"></div>
+                        
+                        <!-- Polished illustration container -->
+                        <div class="relative z-10 w-full max-w-sm lg:max-w-md overflow-hidden rounded-3xl shadow-lg bg-white border border-white/50 transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+                            <img src="{{ asset('images/doctor.png') }}" alt="Healthcare Professional" class="w-full h-auto object-cover" />
                         </div>
                     </div>
                 </div>
